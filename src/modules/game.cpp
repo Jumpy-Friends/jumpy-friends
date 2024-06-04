@@ -112,8 +112,7 @@ void Game::onClick(Vector2 position) {
     
     else if (this->gameState == Playing){
         this->player.Jump();
-    }
-    
+    } 
 }
 
 void Game::onKeyPress(int key) {
