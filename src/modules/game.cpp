@@ -67,11 +67,14 @@ void Game::DisplayStart(double time, double deltaTime) {
         ClearBackground(Color{0, 232, 0, 1});
         BeginMode3D(camera);
         {
-            // DrawGrid(40, 0.5f);
-            this->ground.Draw();
-            this->player.Draw();
+
+          this->ground.Draw();
+          this->player.Draw();      
+
         }
         EndMode3D();
+      
+        StartScreen::draw();
     }
     EndDrawing();
 }
@@ -107,7 +110,12 @@ void Game::DisplayFinish(double time, double deltaTime) {
 }
 
 void Game::onClick(Vector2 position) {
-    this->player.JumpForward();
+
+    if (this->gameState == Start) {
+        this->gameState = Playing;
+        return;
+    }
+    
 }
 
 void Game::onKeyPress(int key) {

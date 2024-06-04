@@ -2,7 +2,11 @@
 
 #include "raylib-cpp.hpp"
 
-extern Vector2 gameLogoPosition;
-extern int gameLogoFontSize;
+namespace StartScreen {
+    extern int gameLogoFontSize;
+    extern int startFontSize;
+    extern int gameLogoStrokeFontSize;
+    void draw();
+}
 
-void draw();
+
