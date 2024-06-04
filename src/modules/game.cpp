@@ -64,9 +64,10 @@ void Game::DisplayStart(double time, double deltaTime) {
                 // DrawGrid(40, 0.5f);
                 this->ground.Draw();
                 this->player.Draw();
+                
             }
             EndMode3D();
-
+            StartScreen::draw();
 
         }
     EndDrawing();
@@ -105,7 +106,14 @@ void Game::DisplayFinish(double time, double deltaTime) {
 
 
 void Game::onClick(Vector2 position) {
-    this->player.Jump();
+    if (this->gameState == Start) {
+        this->gameState = Playing;
+    }
+    
+    else if (this->gameState == Playing){
+        this->player.Jump();
+    }
+    
 }
 
 void Game::onKeyPress(int key) {
