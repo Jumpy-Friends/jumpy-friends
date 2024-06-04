@@ -52,6 +52,5 @@ struct Chunk {
     void Update(double);
     void Draw();
     void setPosition(raylib::Vector3);
-
     void generateMovingChunkItem();
 };

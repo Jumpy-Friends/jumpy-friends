@@ -63,7 +63,7 @@ void Ground::Step() {
 
     raylib::Vector3 lastPosition = this->getLastChunk().position;
     Chunk next = this->collapseNextChunk(this->getLastChunk());
-    next.position = Vector3{0, 0.1, lastPosition.z + 1};
+    next.position = Vector3{0, 0, lastPosition.z + 1};
     this->chunks.push_back(next);
 }
 

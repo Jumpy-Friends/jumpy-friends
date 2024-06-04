@@ -1,7 +1,13 @@
 #include "game.hpp"
 
+#include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
+
+    this->player.ImportModel("src/models/OBJ/plane.obj", "src/models/OBJ/plane_diffuse.png", 0.015f);
+    this->player.ImportModel("src/models/OBJ/castle.obj", "src/models/OBJ/castle_diffuse.png", 0.020f);
+    this->player.ImportModel("src/models/OBJ/well.obj", "src/models/OBJ/well_diffuse.png", 0.12f);
+    this->player.ImportModel("src/models/OBJ/turret.obj", "src/models/OBJ/turret_diffuse.png", 0.06f);
 
     SetTargetFPS(60);
 
@@ -10,11 +16,6 @@ Game::Game(int width, int height, std::string title) {
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
-
-    // this->shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
-
-    // float cameraPos[3] = {camera.position.x, camera.position.y, camera.position.z};
-    // SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
 }
 
 void Game::isHere() {
@@ -23,23 +24,17 @@ void Game::isHere() {
         double deltaTime = GetFrameTime();
         this->PollEvents();
 
-        if (this->gameState == Start){
+        if (this->gameState == Start) {
             this->DisplayStart(time, deltaTime);
         }
 
         else if (this->gameState == Playing) {
             this->Update(time, deltaTime);
             this->DisplayPlay(time, deltaTime);
-        }
-        else if (this->gameState == Finish)
+        } else if (this->gameState == Finish)
             this->DisplayFinish(time, deltaTime);
-        
-        // UpdateLightValues(shader, light);
-    
     }
 }
-
-
 
 void Game::PollEvents() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
@@ -47,6 +42,18 @@ void Game::PollEvents() {
 
     if (IsKeyPressed(KEY_UP))
         this->onKeyPress(KEY_UP);
+
+    if (IsKeyPressed(KEY_LEFT))
+        this->onKeyPress(KEY_LEFT);
+
+    if (IsKeyPressed(KEY_RIGHT))
+        this->onKeyPress(KEY_RIGHT);
+
+    if (IsKeyPressed(KEY_DOWN))
+        this->onKeyPress(KEY_DOWN);
+
+    if (IsKeyPressed(KEY_S))
+        this->onKeyPress(KEY_S);
 }
 
 void Game::Update(double time, double deltaTime) {
@@ -56,22 +63,20 @@ void Game::Update(double time, double deltaTime) {
 
 void Game::DisplayStart(double time, double deltaTime) {
     BeginDrawing();
+    {
+        ClearBackground(Color{0, 232, 0, 1});
+        BeginMode3D(camera);
         {
-            ClearBackground(Color{0, 232, 0, 1});
-            BeginMode3D(camera);
-            {
 
-                // DrawGrid(40, 0.5f);
-                this->ground.Draw();
-                this->player.Draw();
-                
-            }
-            EndMode3D();
-            StartScreen::draw();
+          this->ground.Draw();
+          this->player.Draw();      
 
         }
+        EndMode3D();
+      
+        StartScreen::draw();
+    }
     EndDrawing();
-    
 }
 
 void Game::DisplayPlay(double time, double deltaTime) {
@@ -104,18 +109,38 @@ void Game::DisplayFinish(double time, double deltaTime) {
     EndDrawing();
 }
 
-
 void Game::onClick(Vector2 position) {
+
     if (this->gameState == Start) {
         this->gameState = Playing;
+        return;
     }
     
-    else if (this->gameState == Playing){
-        this->player.Jump();
-    } 
 }
 
 void Game::onKeyPress(int key) {
-    if (key == KEY_UP)
-        this->player.Jump();
+    if (key == KEY_UP) {
+        this->player.JumpForward();
+        return;
+    }
+
+    if (key == KEY_LEFT) {
+        this->player.JumpLeft();
+        return;
+    }
+
+    if (key == KEY_RIGHT) {
+        this->player.JumpRight();
+        return;
+    }
+
+    if (key == KEY_DOWN) {
+        this->player.JumpBackward();
+        return;
+    }
+
+    if (key == KEY_S) {
+        this->player.SwitchModel();
+        return;
+    }
 }
