@@ -17,4 +17,5 @@ class ChunkItemMoving {
     void update();
     ChunkItemMoving(MovingChunkItem, float, float);
     ~ChunkItemMoving();
+    BoundingBox GetBoundingBox(Vector3 chunkPosition) const;
 };

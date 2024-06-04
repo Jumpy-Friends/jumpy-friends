@@ -22,4 +22,6 @@ class Ground {
     void Update();
     void Draw();
     void PrintChunks();
+
+    const std::vector<Chunk>& getChunks() const;
 };

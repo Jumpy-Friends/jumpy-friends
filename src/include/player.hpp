@@ -35,4 +35,6 @@ class Player {
     void JumpLeft();
     void JumpRight();
     void JumpBackward();
+    void resetPos();
+    BoundingBox GetBoundingBox() const;
 };

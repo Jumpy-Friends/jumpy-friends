@@ -74,3 +74,14 @@ void Player::JumpBackward() {
     this->currentSpeed = JUMP_SPEED;
     this->jumpType = JumpType::Backward;
 }
+
+void Player::resetPos() {
+    
+    this->position = Vector3{0, 0.25, 0};
+}
+
+BoundingBox Player::GetBoundingBox() const {
+    Vector3 min = { this->position.x - 0.15f, this->position.y - 0.15f, this->position.z - 0.15f };
+    Vector3 max = { this->position.x + 0.15f, this->position.y + 0.15f, this->position.z + 0.15f };
+    return BoundingBox{ min, max };
+}

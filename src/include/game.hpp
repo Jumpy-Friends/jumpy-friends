@@ -30,6 +30,7 @@ class Game {
 
     void Update(double time, double deltaTime);
     void PollEvents();
+    bool CheckCollisions();
 
     void onClick(Vector2 position);
     void onKeyPress(int key);
@@ -37,4 +38,5 @@ class Game {
    public:
     Game(int, int, std::string);
     void isHere();
+    void Restart();
 };

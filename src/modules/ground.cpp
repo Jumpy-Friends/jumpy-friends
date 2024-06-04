@@ -88,3 +88,7 @@ void Ground::PrintChunks() {
         std::cout << i << ": " << this->chunks[i].type << std::endl;
     }
 }
+
+const std::vector<Chunk>& Ground::getChunks() const {
+    return this->chunks;
+}
