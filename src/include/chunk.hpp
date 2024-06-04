@@ -4,6 +4,7 @@
 #include <raylib-cpp.hpp>
 
 #include "chunkItemMoving.hpp"
+#include "texture.hpp"
 
 enum ChunkType {
     FreeWalk,
@@ -50,7 +51,9 @@ struct Chunk {
     void Despawn();
     void Spawn();
     void Update(double);
-    void Draw();
+    void Draw(ChunkType nextChunk);
     void setPosition(raylib::Vector3);
     void generateMovingChunkItem();
+
+   private:
 };

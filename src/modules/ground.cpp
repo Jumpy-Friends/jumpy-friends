@@ -75,8 +75,8 @@ void Ground::Update() {
 }
 
 void Ground::Draw() {
-    for (auto chunk = this->chunks.begin(); chunk != this->chunks.end(); chunk++)
-        chunk->Draw();
+    for (int i = 0; i < this->chunks.size() - 1; i++)
+        this->chunks.at(i).Draw(this->chunks.at(i + 1).type);
 }
 
 Chunk Ground::getLastChunk() {
