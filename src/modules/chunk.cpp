@@ -4,17 +4,32 @@ std::ostream& operator<<(std::ostream& os, const Chunk& chunk) {
     return os << "ChunkType: " << chunk.type << std::endl;
 }
 
-void Chunk::Draw() {
-    Color chunkColors[] = {
-        GREEN,
-        GRAY,
-        DARKGRAY,
-        GRAY,
-        PURPLE,
-        BLUE,
-        PURPLE};
+void Chunk::Draw(ChunkType nextChunk) {
+    raylib::Mesh plane = GenMeshPlane(1, 1, 2, 2);
+    Model model = LoadModelFromMesh(plane);
 
-    this->position.DrawPlane({30, 1}, chunkColors[this->type]);
+    if (this->type == RoadBegin || this->type == RoadEnd)
+        model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_SIDEWALK;
+    else if (this->type == Road)
+        model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_ROAD;
+    else if (this->type == RiverBegin || this->type == RiverEnd)
+        model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_SAND;
+    else if (this->type == River)
+        model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_SEA;
+    else
+        model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_GRASS;
+
+    for (int i = -15; i < 15; i++) {
+        Vector3 tilePosition = this->position;
+        tilePosition.x -= i;
+        DrawModel(model, tilePosition, 1, WHITE);
+
+        if (this->type == Road && nextChunk == Road) {
+            tilePosition.y += 0.01;
+            tilePosition.z += 0.5;
+            DrawPlane(tilePosition, Vector2{0.6, 0.075}, WHITE);
+        }
+    }
 
     if (this->type == Road || this->type == River) {
         for (int d = 0; d < this->movingItemsNum; d++) {

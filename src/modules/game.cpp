@@ -1,6 +1,5 @@
 #include "game.hpp"
 
-#include "player.hpp"
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
 
@@ -26,6 +25,8 @@ void Game::Restart() {
 }
 
 void Game::isHere() {
+    LoadTextures();
+
     while (!this->window->ShouldClose()) {
         double time = GetTime();
         double deltaTime = GetFrameTime();
