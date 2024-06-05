@@ -37,4 +37,5 @@ class Player {
     void JumpBackward();
     void resetPos();
     BoundingBox GetBoundingBox() const;
+    Vector3 GetPosition() const;
 };

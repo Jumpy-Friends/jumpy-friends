@@ -1,5 +1,9 @@
 #include "game.hpp"
 
+const float BOUNDARY_LEFT = -3.0f;
+const float BOUNDARY_RIGHT = 7.5f;
+const float BOUNDARY_BOTTOM = -4.0f;
+
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
 
@@ -15,13 +19,19 @@ Game::Game(int width, int height, std::string title) {
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
     this->camera.fovy = 40.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
+    this->score = 0;
 }
 
 void Game::Restart() {
 
     this->ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
-    this->gameState = Playing;
+    this->gameState = Start;
+    this->score = 0;
     this->player.resetPos();
+}
+
+void Game::IncrementScore(int amount) {
+    this->score += amount;
 }
 
 void Game::isHere() {
@@ -75,7 +85,7 @@ void Game::Update(double time, double deltaTime) {
 
     this->ground.Update();
     this->player.Update();
-    if (CheckCollisions()) {
+    if (CheckCollisions() || this->IsPlayerOutOfBounds()) {
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
@@ -89,7 +99,7 @@ void Game::DisplayStart(double time, double deltaTime) {
         {
 
           this->ground.Draw();
-          this->player.Draw();      
+          this->player.Draw();
 
         }
         EndMode3D();
@@ -110,6 +120,8 @@ void Game::DisplayPlay(double time, double deltaTime) {
             this->player.Draw();
         }
         EndMode3D();
+
+        DrawText(TextFormat("Score: %d", this->score), GetScreenWidth() - 115, 10, 20, BLACK);
         
     }
     EndDrawing();
@@ -124,6 +136,14 @@ void Game::DisplayFinish(double time, double deltaTime) {
 
     }
     EndDrawing();
+}
+
+bool Game::IsPlayerOutOfBounds() {
+    
+    Vector3 playerPos = this->player.GetPosition();
+    Vector2 screenPos = GetWorldToScreen(playerPos, camera);
+
+    return screenPos.x < 0 || screenPos.x > GetScreenWidth() || screenPos.y < 0 || screenPos.y > GetScreenHeight();
 }
 
 void Game::onClick(Vector2 position) {
@@ -141,6 +161,7 @@ void Game::onKeyPress(int key) {
 
         if (key == KEY_UP) {
             this->player.JumpForward();
+            this->IncrementScore(10);
             return;
         }
 
@@ -156,6 +177,7 @@ void Game::onKeyPress(int key) {
 
         if (key == KEY_DOWN) {
             this->player.JumpBackward();
+            this->IncrementScore(-10);
             return;
         }
 
