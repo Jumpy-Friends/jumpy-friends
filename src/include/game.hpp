@@ -31,6 +31,7 @@ class Game {
 
     void Update(double time, double deltaTime);
     void PollEvents();
+    bool CheckCollisions(MovingChunkItem&, float&);
     bool CheckCollisions();
 
     void onClick(Vector2 position);

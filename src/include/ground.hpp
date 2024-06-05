@@ -10,12 +10,11 @@
 class Ground {
    private:
     std::vector<Chunk> chunks;
-    int speeds[3] = {0.05, 0.1, 1.6};
-    
+    double speeds[3] = {0.05, 0.1, 1.6};
+
     Chunk collapseNextChunk();
     Chunk getLastChunk();
     double worldSpeed;
-
 
     void SetupGround(int chunkCount);
 

@@ -18,7 +18,6 @@ Game::Game(int width, int height, std::string title) {
 }
 
 void Game::Restart() {
-
     this->ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     this->gameState = Playing;
     this->player.resetPos();
@@ -45,12 +44,10 @@ void Game::isHere() {
 }
 
 void Game::PollEvents() {
-
     if (this->gameState == Finish && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         this->Restart();
         return;
     }
-    
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         this->onClick(GetMousePosition());
@@ -72,10 +69,18 @@ void Game::PollEvents() {
 }
 
 void Game::Update(double time, double deltaTime) {
-
     this->ground.Update();
     this->player.Update();
+
     if (CheckCollisions()) {
+        MovingChunkItem c;
+        float speed = 0;
+        CheckCollisions(c, speed);
+        if (c == Surfboard) {
+            player.followLog(speed);
+            return;
+        }
+
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
@@ -87,13 +92,11 @@ void Game::DisplayStart(double time, double deltaTime) {
         ClearBackground(Color{0, 232, 0, 1});
         BeginMode3D(camera);
         {
-
-          this->ground.Draw();
-          this->player.Draw();      
-
+            this->ground.Draw();
+            this->player.Draw();
         }
         EndMode3D();
-      
+
         StartScreen::draw();
     }
     EndDrawing();
@@ -110,7 +113,6 @@ void Game::DisplayPlay(double time, double deltaTime) {
             this->player.Draw();
         }
         EndMode3D();
-        
     }
     EndDrawing();
 }
@@ -121,24 +123,19 @@ void Game::DisplayFinish(double time, double deltaTime) {
         ClearBackground(BLACK);
         DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 60) / 2, GetScreenHeight() / 2 - 30, 60, RED);
         DrawText("Click to Restart", GetScreenWidth() / 2 - MeasureText("Click to Restart", 20) / 2, GetScreenHeight() / 2 + 40, 20, GRAY);
-
     }
     EndDrawing();
 }
 
 void Game::onClick(Vector2 position) {
-
     if (this->gameState == Start) {
         this->gameState = Playing;
         return;
     }
-    
 }
 
 void Game::onKeyPress(int key) {
-
     if (this->gameState == Playing) {
-
         if (key == KEY_UP) {
             this->player.JumpForward();
             return;
@@ -166,16 +163,15 @@ void Game::onKeyPress(int key) {
     }
 }
 
-
 bool Game::CheckCollisions() {
     BoundingBox playerBox = this->player.GetBoundingBox();
-    const auto& chunks = this->ground.getChunks();  
+    const auto& chunks = this->ground.getChunks();
 
     for (const auto& chunk : chunks) {
         if (chunk.type == Road || chunk.type == River) {
-            for(ChunkItem* item: chunk.items){
-               BoundingBox itemBox = item->GetBoundingBox(chunk.position);
-               if (CheckCollisionBoxes(playerBox, itemBox)) {
+            for (ChunkItem* item : chunk.items) {
+                BoundingBox itemBox = item->GetBoundingBox(chunk.position);
+                if (CheckCollisionBoxes(playerBox, itemBox)) {
                     return true;
                 }
             }
@@ -184,6 +180,25 @@ bool Game::CheckCollisions() {
     return false;
 }
 
+bool Game::CheckCollisions(MovingChunkItem& c, float& speed) {
+    BoundingBox playerBox = this->player.GetBoundingBox();
+    const auto& chunks = this->ground.getChunks();
 
+    for (const auto& chunk : chunks) {
+        if (chunk.type == Road || chunk.type == River) {
+            for (ChunkItem* item : chunk.items) {
+                BoundingBox itemBox = item->GetBoundingBox(chunk.position);
+                if (CheckCollisionBoxes(playerBox, itemBox)) {
+                    speed = chunk.speed;
+                    if (chunk.type == Road)
+                        c = MovingChunkItem::Car;
+                    else
+                        c = MovingChunkItem::Surfboard;
 
-
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}

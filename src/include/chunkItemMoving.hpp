@@ -3,6 +3,7 @@
 #include <raylib-cpp.hpp>
 
 #include "chunkItem.hpp"
+#include "raylib.h"
 
 enum MovingChunkItem {
     Car = 0,

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 
+#include "chunk.hpp"
+
 #define JUMP_SPEED 0.1
 
 enum JumpType {
@@ -35,5 +37,6 @@ class Player {
     void JumpRight();
     void JumpBackward();
     void resetPos();
+    void followLog(float);
     BoundingBox GetBoundingBox() const;
 };

@@ -47,6 +47,10 @@ void Player::Update() {
     this->position.y += currentSpeed;
 }
 
+void Player::followLog(float speed) {
+    this->position.x -= speed;
+}
+
 void Player::JumpForward() {
     if (this->jumpType != JumpType::None) return;
 
