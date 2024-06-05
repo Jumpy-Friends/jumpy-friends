@@ -35,9 +35,12 @@ class Game {
 
     void onClick(Vector2 position);
     void onKeyPress(int key);
+    int score;
 
    public:
     Game(int, int, std::string);
     void isHere();
     void Restart();
+    void IncrementScore(int amount);
+    bool IsPlayerOutOfBounds();
 };
