@@ -2,6 +2,6 @@
 
 #include "raylib-cpp.hpp"
 
-extern Model CAR_MODEL;
+extern Model CAR_MODEL, LOG_MODEL;
 
 void LoadModels();

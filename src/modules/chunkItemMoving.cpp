@@ -16,8 +16,13 @@ ChunkItemMoving::ChunkItemMoving(MovingChunkItem type, float speedX, float posit
 
 void ChunkItemMoving::draw(Vector3 chunkPosition) {
     raylib::Vector3 itemPosition = raylib::Vector3(this->position, chunkPosition.y + 0.1, chunkPosition.z);
+
+    if (this->type == Surfboard) {
+        DrawModelEx(LOG_MODEL, itemPosition, Vector3{1, 1, 1}, 0, Vector3{0.75, 0.75, 0.75}, WHITE);
+    } else {
+        DrawModelEx(CAR_MODEL, itemPosition, Vector3{1, 1, 1}, 0, Vector3{0.75, 0.75, 0.75}, WHITE);
+    }
     
-    DrawModelEx(CAR_MODEL, itemPosition, Vector3{1, 1, 1}, 0, Vector3{0.6, 0.3, 0.3}, movingChunkItemColors[this->type]);
     //DrawModelEx(CAR_MODEL, itemPosition, Vector3{1, 0, 0}, 270, Vector3{0.09, 0.09, 0.09}, movingChunkItemColors[this->type]);
     //itemPosition.DrawCube(2.0, 1.0, 0.6, movingChunkItemColors[this->type]);
 }
