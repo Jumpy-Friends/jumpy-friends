@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <raylib-cpp.hpp>
+#include "models.hpp"
 
 enum MovingChunkItem {
     Car = 0,
@@ -11,6 +12,7 @@ enum MovingChunkItem {
 class ChunkItemMoving {
    public:
     float position;
+    Model model;
     float speedX;
     MovingChunkItem type;
     void draw(Vector3);
@@ -18,4 +20,5 @@ class ChunkItemMoving {
     ChunkItemMoving(MovingChunkItem, float, float);
     ~ChunkItemMoving();
     BoundingBox GetBoundingBox(Vector3 chunkPosition) const;
+   
 };
