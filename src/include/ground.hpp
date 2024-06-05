@@ -10,7 +10,7 @@
 class Ground {
    private:
     std::vector<Chunk> chunks;
-    Chunk collapseNextChunk(Chunk previousChunk);
+    Chunk collapseNextChunk();
     Chunk getLastChunk();
     double worldSpeed;
 

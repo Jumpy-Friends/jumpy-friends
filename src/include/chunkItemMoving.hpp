@@ -13,12 +13,12 @@ class ChunkItemMoving : public ChunkItem {
    public:
     float speedX;
     MovingChunkItem type;
-    void Draw(Vector3);
-    void Update();
-    BoundingBox GetBoundingBox(Vector3 chunkPosition) const;
+    void Draw(Vector3) override;
+    void Update() override;
 
-    ChunkItemMoving(MovingChunkItem type, float speedX, float position) : ChunkItem(position) {
+    ChunkItemMoving(MovingChunkItem type, float speedX, float position) {
         this->type = type;
         this->speedX = speedX;
+        this->position = position;
     };
 };

@@ -9,22 +9,22 @@ Ground::Ground(int chunkCount, double worldSpeed) {
 
 void Ground::SetupGround(int chunkCount) {
     int i;
-    for (i = 0; i < 2; i++) {
-        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0.1, (float)i}};
+    for (i = -4; i < 8; i++) {
+        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0, (float)i}};
         this->chunks.push_back(freewalk);
     }
 
     for (i; i < chunkCount; i++) {
-        Chunk collapsedChunk = this->collapseNextChunk(this->chunks[i - 1]);
+        Chunk collapsedChunk = this->collapseNextChunk();
         collapsedChunk.position = Vector3{6, 0, (float)i};
         this->chunks.push_back(collapsedChunk);
     }
 }
 
-Chunk Ground::collapseNextChunk(Chunk previousChunk) {
+Chunk Ground::collapseNextChunk() {
     double random = 0.f;
 
-    switch (previousChunk.type) {
+    switch (this->getLastChunk().type) {
         // Lowest energy collapses (deterministic).
         case RoadBegin:
             return Chunk{Road, JustExisting};
@@ -45,12 +45,16 @@ Chunk Ground::collapseNextChunk(Chunk previousChunk) {
                        : Chunk{RiverBegin, JustExisting};
 
         case Road:
+            if (this->chunks.at(this->chunks.size() - 2).type == RoadBegin)
+                return Chunk{Road, JustExisting};
             random = GetRandomValue(0, 1000) / 1000.f;
-            return isbetween<double>(random, 0.f, 0.6)
+            return isbetween<double>(random, 0.f, 0.5)
                        ? Chunk{Road, JustExisting}
                        : Chunk{RoadEnd, JustExisting};
 
         case River:
+            if (this->chunks.at(this->chunks.size() - 2).type == RiverBegin)
+                return Chunk{River, JustExisting};
             random = GetRandomValue(0, 1000) / 1000.f;
             return isbetween<double>(random, 0.f, 0.6)
                        ? Chunk{River, JustExisting}
@@ -62,7 +66,7 @@ void Ground::Step() {
     this->chunks.erase(this->chunks.begin());
 
     raylib::Vector3 lastPosition = this->getLastChunk().position;
-    Chunk next = this->collapseNextChunk(this->getLastChunk());
+    Chunk next = this->collapseNextChunk();
     next.position = Vector3{0, 0, lastPosition.z + 1};
     this->chunks.push_back(next);
 }
