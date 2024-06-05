@@ -34,7 +34,7 @@ void Chunk::Draw(ChunkType nextChunk) {
     if (this->type == Road || this->type == River) {
         for (int d = 0; d < this->movingItemsNum; d++) {
             int idx = (startIdx + d) % this->movingItemCapacity;
-            this->movingItems[idx]->draw(this->position);
+            this->movingItems[idx]->Draw(this->position);
         }
     }
 }
@@ -46,7 +46,7 @@ void Chunk::Update(double speed) {
     if (this->type == Road || this->type == River) {
         for (int d = 0; d < this->movingItemsNum; d++) {
             int idx = (startIdx + d) % this->movingItemCapacity;
-            this->movingItems[idx]->update();
+            this->movingItems[idx]->Update();
         }
     }
 }

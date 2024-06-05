@@ -15,11 +15,10 @@ enum JumpType {
 
 class Player {
    private:
-    Vector3 position = Vector3{0, 0.25, 0};
+    Vector3 position = Vector3{0, 0.1, 0};
     double worldSpeed;
     double currentSpeed;
     double gravity = -0.02f;
-    double movement = -1;
     JumpType jumpType = JumpType::None;
     std::vector<Model> models;
     std::vector<float> scales;

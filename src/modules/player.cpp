@@ -28,8 +28,8 @@ void Player::Update() {
 
     if (this->jumpType == JumpType::None) return;
 
-    if (this->position.y < 0.25) {
-        this->position.y = 0.25;
+    if (this->position.y < 0.1) {
+        this->position.y = 0.1;
         this->jumpType = JumpType::None;
         return;
     }
@@ -76,8 +76,7 @@ void Player::JumpBackward() {
 }
 
 void Player::resetPos() {
-    
-    this->position = Vector3{0, 0.25, 0};
+    this->position = Vector3{0, 0.1, 0};
 }
 
 Vector3 Player::GetPosition() const {
@@ -85,7 +84,7 @@ Vector3 Player::GetPosition() const {
 }
 
 BoundingBox Player::GetBoundingBox() const {
-    Vector3 min = { this->position.x - 0.15f, this->position.y - 0.15f, this->position.z - 0.15f };
-    Vector3 max = { this->position.x + 0.15f, this->position.y + 0.15f, this->position.z + 0.15f };
-    return BoundingBox{ min, max };
+    Vector3 min = {this->position.x - 0.15f, this->position.y - 0.15f, this->position.z - 0.15f};
+    Vector3 max = {this->position.x + 0.15f, this->position.y + 0.15f, this->position.z + 0.15f};
+    return BoundingBox{min, max};
 }
