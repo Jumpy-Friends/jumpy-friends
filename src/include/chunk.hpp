@@ -1,9 +1,12 @@
 #pragma once
 
+#include <random>
 #include <iostream>
+#include <deque>
 #include <raylib-cpp.hpp>
 
 #include "chunkItemMoving.hpp"
+#include "chunkItemStable.hpp"
 #include "texture.hpp"
 
 enum ChunkType {
@@ -23,11 +26,10 @@ enum ChunkState {
 };
 
 struct Chunk {
-    ChunkItemMoving* movingItems[10];
-    int movingItemCapacity = 10;
-    int movingItemsNum = 0;
-    int startIdx = 0;
-    int endIdx = 0;
+    std::deque<ChunkItem*> items;
+    int chunkItemCapacity = 10;
+    double itemGenProb = 0.3;
+    int speeds[3] = {0.05, 0.1, 1.6};
 
     ChunkType type;
     raylib::Vector3 position;
@@ -43,9 +45,7 @@ struct Chunk {
         this->type = type;
         this->state = state;
         this->position = position;
-        if (this->type == Road || this->type == River) {
-            this->generateMovingChunkItem();
-        }
+        this->setupChunkItems();
     }
 
     void Despawn();
@@ -53,8 +53,13 @@ struct Chunk {
     void Update(double);
     void Draw(ChunkType nextChunk);
     void setPosition(raylib::Vector3);
+    void setupChunkItems();
+    void updateChunkItems();
+
+    void moveMovingChunkItems();
+    void deleteMovingChunkItem();
     void generateMovingChunkItem();  // Remove moving
                                      // Setup -> iterate from -15 to 15
-
+    bool generateBernouilli(double);
    private:
 };

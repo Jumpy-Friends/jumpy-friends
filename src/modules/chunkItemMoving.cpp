@@ -3,7 +3,7 @@
 Color movingChunkItemColors[2] = {RED, BROWN};
 
 void ChunkItemMoving::Update() {
-    this->position += speedX;
+    this->position -= speedX;
 }
 
 void ChunkItemMoving::Draw(Vector3 chunkPosition) {

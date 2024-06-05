@@ -173,18 +173,17 @@ bool Game::CheckCollisions() {
 
     for (const auto& chunk : chunks) {
         if (chunk.type == Road || chunk.type == River) {
-            for (int d = 0; d < chunk.movingItemsNum; d++) {
-                int idx = (chunk.startIdx + d) % chunk.movingItemCapacity;
-                BoundingBox itemBox = chunk.movingItems[idx]->GetBoundingBox(chunk.position);
-
-                if (CheckCollisionBoxes(playerBox, itemBox)) {
+            for(ChunkItem* item: chunk.items){
+               BoundingBox itemBox = item->GetBoundingBox(chunk.position);
+               if (CheckCollisionBoxes(playerBox, itemBox)) {
                     return true;
                 }
             }
         }
     }
-
     return false;
 }
+
+
 
 
