@@ -53,7 +53,8 @@ struct Chunk {
     void Update(double);
     void Draw(ChunkType nextChunk);
     void setPosition(raylib::Vector3);
-    void generateMovingChunkItem();
+    void generateMovingChunkItem();  // Remove moving
+                                     // Setup -> iterate from -15 to 15
 
    private:
 };

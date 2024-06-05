@@ -10,13 +10,13 @@ Ground::Ground(int chunkCount, double worldSpeed) {
 void Ground::SetupGround(int chunkCount) {
     int i;
     for (i = -4; i < 8; i++) {
-        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0, (float)i}};
+        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{0, 0, (float)i}};
         this->chunks.push_back(freewalk);
     }
 
     for (i; i < chunkCount; i++) {
         Chunk collapsedChunk = this->collapseNextChunk();
-        collapsedChunk.position = Vector3{6, 0, (float)i};
+        collapsedChunk.position = Vector3{0, 0, (float)i};
         this->chunks.push_back(collapsedChunk);
     }
 }
