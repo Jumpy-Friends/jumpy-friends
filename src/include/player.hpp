@@ -15,7 +15,6 @@ enum JumpType {
 
 class Player {
    private:
-    Vector3 position = Vector3{0, 0.1, 0};
     double worldSpeed;
     double currentSpeed;
     double gravity = -0.02f;
@@ -25,6 +24,7 @@ class Player {
     int currentModelIndex;
 
    public:
+    Vector3 position = Vector3{0, 0.1, 0};
     Player(double speed);
     void Draw();
     void ImportModel(const std::string& path, const std::string& texturePath, float scale);
@@ -36,4 +36,5 @@ class Player {
     void JumpBackward();
     void resetPos();
     BoundingBox GetBoundingBox() const;
+    BoundingBox GetFutureBoundingBox(float, float) const;
 };

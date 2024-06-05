@@ -65,7 +65,7 @@ void Chunk::setupChunkItems(){
             if (this->type == River) {
                 type = Surfboard;
             }
-            newItem = new ChunkItemMoving(type, 0.5f, -6.f + ((i + 1) * 4.0f));
+            newItem = new ChunkItemMoving(type, 0.05f, -6.f + ((i + 1) * 4.0f));
         }
         else {
             if(!this->generateBernouilli(this->itemGenProb)){
@@ -90,9 +90,7 @@ void Chunk::updateChunkItems(){
 void Chunk::deleteMovingChunkItem(){
     if(!items.empty()){
         ChunkItem* mightDelete = items.front();
-        std::cout << mightDelete->position << std::endl;
         if(mightDelete->position > 15.0 || mightDelete->position < -15.0 ){
-        std::cout << "deleting item" << std::endl;
         items.pop_front();
         }
     }
@@ -108,11 +106,9 @@ void Chunk::generateMovingChunkItem() {
 
     if (this->type == River) {
         type = Surfboard;
-        this->items.push_back(new ChunkItemMoving(type, 0.5, -14.0 + ((this->items.size()+ 1) * 4.0)));
-
     }
 
-    this->items.push_back(new ChunkItemMoving(type, 0.5, -14.0 + ((this->items.size()+ 1) * 4.0)));
+    this->items.push_back(new ChunkItemMoving(type, 0.05, -14.0 + ((this->items.size()+ 1) * 4.0)));
 }
 
 void Chunk::moveMovingChunkItems(){

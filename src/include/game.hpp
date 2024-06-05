@@ -21,7 +21,7 @@ class Game {
     raylib::Window* window;
     Camera3D camera;
     GameState gameState = Start;
-    double worldSpeed = 0.04;
+    double worldSpeed = 0.01;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
 
@@ -31,7 +31,8 @@ class Game {
 
     void Update(double time, double deltaTime);
     void PollEvents();
-    bool CheckCollisions();
+    bool CheckMovingCollisions();
+    bool CheckStaticCollisions(float, float);
 
     void onClick(Vector2 position);
     void onKeyPress(int key);

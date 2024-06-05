@@ -75,7 +75,8 @@ void Game::Update(double time, double deltaTime) {
 
     this->ground.Update();
     this->player.Update();
-    if (CheckCollisions()) {
+    
+    if (CheckMovingCollisions()) {
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
@@ -140,22 +141,30 @@ void Game::onKeyPress(int key) {
     if (this->gameState == Playing) {
 
         if (key == KEY_UP) {
-            this->player.JumpForward();
+            if (!this->CheckStaticCollisions(0.f, 0.8f)){
+                this->player.JumpForward();
+            }
             return;
         }
 
         if (key == KEY_LEFT) {
-            this->player.JumpLeft();
+            if (!this->CheckStaticCollisions(0.8f, 0.f)){
+                this->player.JumpLeft();
+            }
             return;
         }
 
         if (key == KEY_RIGHT) {
-            this->player.JumpRight();
+            if (!this->CheckStaticCollisions(-0.8f, 0.f)){
+                this->player.JumpRight();
+            }
             return;
         }
 
         if (key == KEY_DOWN) {
-            this->player.JumpBackward();
+            if (!this->CheckStaticCollisions(0.f, -0.8f)){
+                this->player.JumpBackward();
+            }
             return;
         }
 
@@ -167,14 +176,32 @@ void Game::onKeyPress(int key) {
 }
 
 
-bool Game::CheckCollisions() {
+bool Game::CheckMovingCollisions() {
     BoundingBox playerBox = this->player.GetBoundingBox();
     const auto& chunks = this->ground.getChunks();  
 
     for (const auto& chunk : chunks) {
-        if (chunk.type == Road || chunk.type == River) {
+        if (chunk.type == Road || chunk.type == River){
             for(ChunkItem* item: chunk.items){
-               BoundingBox itemBox = item->GetBoundingBox(chunk.position);
+               BoundingBox itemBox = item->GetMovingBoundingBox(chunk.position);
+               if (CheckCollisionBoxes(playerBox, itemBox)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool Game::CheckStaticCollisions(float xOffset, float zOffset) {
+    BoundingBox playerBox = this->player.GetFutureBoundingBox(xOffset, zOffset);
+    
+    const auto& chunks = this->ground.getChunks();  
+
+    for (const auto& chunk : chunks) {
+        if (!(chunk.type == Road || chunk.type == River)){
+            for(ChunkItem* item: chunk.items){
+               BoundingBox itemBox = item->GetStaticBoundingBox(chunk.position);
                if (CheckCollisionBoxes(playerBox, itemBox)) {
                     return true;
                 }

@@ -29,7 +29,8 @@ struct Chunk {
     std::deque<ChunkItem*> items;
     int chunkItemCapacity = 10;
     double itemGenProb = 0.3;
-    int speeds[3] = {0.05, 0.1, 1.6};
+    int chunkItemSpeed;
+    
 
     ChunkType type;
     raylib::Vector3 position;
