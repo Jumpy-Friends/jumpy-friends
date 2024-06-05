@@ -85,7 +85,7 @@ void Game::Update(double time, double deltaTime) {
 
     this->ground.Update();
     this->player.Update();
-    if (CheckCollisions() || this->IsPlayerOutOfBounds()) {
+    if (CheckCollisions() || this->IsOutOfBounds(this->player.GetPosition())) {
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
@@ -138,11 +138,8 @@ void Game::DisplayFinish(double time, double deltaTime) {
     EndDrawing();
 }
 
-bool Game::IsPlayerOutOfBounds() {
-    
-    Vector3 playerPos = this->player.GetPosition();
-    Vector2 screenPos = GetWorldToScreen(playerPos, camera);
-
+bool Game::IsOutOfBounds(Vector3 pos) {
+    Vector2 screenPos = GetWorldToScreen(pos, camera);
     return screenPos.x < 0 || screenPos.x > GetScreenWidth() || screenPos.y < 0 || screenPos.y > GetScreenHeight();
 }
 

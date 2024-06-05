@@ -42,5 +42,5 @@ class Game {
     void isHere();
     void Restart();
     void IncrementScore(int amount);
-    bool IsPlayerOutOfBounds();
+    bool IsOutOfBounds(Vector3 pos);
 };
