@@ -76,7 +76,7 @@ void Player::JumpBackward() {
 }
 
 void Player::resetPos() {
-    this->position = Vector3{0, 0.25, 0};
+    this->position = Vector3{0, 0.1, 0};
 }
 
 BoundingBox Player::GetBoundingBox() const {

@@ -21,7 +21,7 @@ class Game {
     raylib::Window* window;
     Camera3D camera;
     GameState gameState = Start;
-    double worldSpeed = 0.02;
+    double worldSpeed = 0.04;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
 
