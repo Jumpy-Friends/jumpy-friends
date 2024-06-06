@@ -10,19 +10,21 @@ Ground::Ground(int chunkCount, double worldSpeed) {
 void Ground::SetupGround(int chunkCount) {
     int i;
     for (i = -4; i < 8; i++) {
-        Chunk freewalk = Chunk{FreeWalk, JustExisting, Vector3{6, 0, (float)i}};
+        Chunk freewalk = Chunk{FreeWalk, JustExisting, 0, Vector3{0, 0, (float)i}};
         this->chunks.push_back(freewalk);
     }
 
     for (i; i < chunkCount; i++) {
         Chunk collapsedChunk = this->collapseNextChunk();
-        collapsedChunk.position = Vector3{6, 0, (float)i};
+        collapsedChunk.position = Vector3{0, 0, (float)i};
         this->chunks.push_back(collapsedChunk);
     }
 }
 
 Chunk Ground::collapseNextChunk() {
     double random = 0.f;
+
+    double speed = 0.05;
 
     switch (this->getLastChunk().type) {
         // Lowest energy collapses (deterministic).
@@ -46,18 +48,18 @@ Chunk Ground::collapseNextChunk() {
 
         case Road:
             if (this->chunks.at(this->chunks.size() - 2).type == RoadBegin)
-                return Chunk{Road, JustExisting};
+                return Chunk{Road, JustExisting, speed};
             random = GetRandomValue(0, 1000) / 1000.f;
             return isbetween<double>(random, 0.f, 0.5)
-                       ? Chunk{Road, JustExisting}
+                       ? Chunk{Road, JustExisting, speed}
                        : Chunk{RoadEnd, JustExisting};
 
         case River:
             if (this->chunks.at(this->chunks.size() - 2).type == RiverBegin)
-                return Chunk{River, JustExisting};
+                return Chunk{River, JustExisting, speed};
             random = GetRandomValue(0, 1000) / 1000.f;
             return isbetween<double>(random, 0.f, 0.6)
-                       ? Chunk{River, JustExisting}
+                       ? Chunk{River, JustExisting, speed}
                        : Chunk{RiverEnd, JustExisting};
     }
 }

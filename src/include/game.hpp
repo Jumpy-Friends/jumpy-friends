@@ -2,12 +2,13 @@
 #include <iostream>
 #include <raylib-cpp.hpp>
 
+#include "chunkItemMoving.hpp"
 #include "ground.hpp"
+#include "models.hpp"
 #include "player.hpp"
 #include "rlights.h"
 #include "startScreen.hpp"
 #include "texture.hpp"
-#include "models.hpp"
 #define RENDER_CHUNK_SIZE 30
 
 enum GameState {
@@ -31,6 +32,7 @@ class Game {
 
     void Update(double time, double deltaTime);
     void PollEvents();
+    bool CheckCollisions(MovingChunkItem&, float&);
     bool CheckCollisions();
 
     void onClick(Vector2 position);

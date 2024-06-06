@@ -11,6 +11,9 @@ enum MovingChunkItem {
 };
 
 class ChunkItemMoving : public ChunkItem {
+   private:
+    Color tint = WHITE;
+
    public:
     float speedX;
     MovingChunkItem type;
@@ -22,5 +25,14 @@ class ChunkItemMoving : public ChunkItem {
         this->type = type;
         this->speedX = speedX;
         this->position = position;
+
+        Color colors[4] = {
+            WHITE,
+            RED,
+            GREEN,
+            YELLOW,
+        };
+
+        this->tint = colors[GetRandomValue(0, 3)];
     };
 };
