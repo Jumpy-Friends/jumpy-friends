@@ -257,7 +257,7 @@ bool Game::CheckCollisions(MovingChunkItem& c, float& speed) {
     for (const auto& chunk : chunks) {
         if (chunk.type == Road || chunk.type == River) {
             for (ChunkItem* item : chunk.items) {
-                BoundingBox itemBox = item->GetBoundingBox(chunk.position);
+                BoundingBox itemBox = item->GetMovingBoundingBox(chunk.position);
                 if (CheckCollisionBoxes(playerBox, itemBox)) {
                     speed = chunk.speed;
                     if (chunk.type == Road)

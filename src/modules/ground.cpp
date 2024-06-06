@@ -24,7 +24,7 @@ void Ground::SetupGround(int chunkCount) {
 Chunk Ground::collapseNextChunk() {
     double random = 0.f;
 
-    double speed = 0.05;
+    double speed = GetRandomValue(4, 7) / 100.f;
 
     switch (this->getLastChunk().type) {
         // Lowest energy collapses (deterministic).
