@@ -98,8 +98,6 @@ void Chunk::deleteMovingChunkItem(){
 
 void Chunk::generateMovingChunkItem() {
     // the list is full
-   
-    std::cout << this->items.size()<< std::endl;
     if (this->chunkItemCapacity == this->items.size()) return;
      
     MovingChunkItem type = Car;

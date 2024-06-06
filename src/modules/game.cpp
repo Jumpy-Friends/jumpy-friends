@@ -141,28 +141,28 @@ void Game::onKeyPress(int key) {
     if (this->gameState == Playing) {
 
         if (key == KEY_UP) {
-            if (!this->CheckStaticCollisions(0.f, 0.8f)){
+            if (!this->CheckStaticCollisions(0.f, 1.0f)){
                 this->player.JumpForward();
             }
             return;
         }
 
         if (key == KEY_LEFT) {
-            if (!this->CheckStaticCollisions(0.8f, 0.f)){
+            if (!this->CheckStaticCollisions(1.0f, 0.f)){
                 this->player.JumpLeft();
             }
             return;
         }
 
         if (key == KEY_RIGHT) {
-            if (!this->CheckStaticCollisions(-0.8f, 0.f)){
+            if (!this->CheckStaticCollisions(-1.0f, 0.f)){
                 this->player.JumpRight();
             }
             return;
         }
 
         if (key == KEY_DOWN) {
-            if (!this->CheckStaticCollisions(0.f, -0.8f)){
+            if (!this->CheckStaticCollisions(0.f, -1.0f)){
                 this->player.JumpBackward();
             }
             return;
@@ -194,17 +194,24 @@ bool Game::CheckMovingCollisions() {
 }
 
 bool Game::CheckStaticCollisions(float xOffset, float zOffset) {
-    BoundingBox playerBox = this->player.GetFutureBoundingBox(xOffset, zOffset);
+    Vector3 currentPosition = player.position;
+    Vector3 newPosition = Vector3{currentPosition.x + xOffset, currentPosition.y, currentPosition.z + zOffset};
     
     const auto& chunks = this->ground.getChunks();  
 
     for (const auto& chunk : chunks) {
         if (!(chunk.type == Road || chunk.type == River)){
             for(ChunkItem* item: chunk.items){
-               BoundingBox itemBox = item->GetStaticBoundingBox(chunk.position);
-               if (CheckCollisionBoxes(playerBox, itemBox)) {
+                Vector3 chunkPosition = chunk.position;
+                
+                float itemXPosition = item->position;
+
+                Vector3 itemPosition = Vector3{itemXPosition, chunkPosition.y, chunkPosition.z};
+
+                if(abs(itemPosition.x - newPosition.x) < 0.5 && abs(itemPosition.z - newPosition.z) < 0.5){
                     return true;
                 }
+
             }
         }
     }
