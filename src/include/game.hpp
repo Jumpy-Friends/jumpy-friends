@@ -7,7 +7,7 @@
 #include "rlights.h"
 #include "startScreen.hpp"
 #include "texture.hpp"
-
+#include "models.hpp"
 #define RENDER_CHUNK_SIZE 30
 
 enum GameState {

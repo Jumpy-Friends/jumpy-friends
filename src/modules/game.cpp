@@ -7,8 +7,8 @@ const float BOUNDARY_BOTTOM = -4.0f;
 Game::Game(int width, int height, std::string title) {
     this->window = new raylib::Window(width, height, title);
 
-    this->player.ImportModel("src/models/OBJ/plane.obj", "src/models/OBJ/plane_diffuse.png", 0.015f);
-    this->player.ImportModel("src/models/OBJ/castle.obj", "src/models/OBJ/castle_diffuse.png", 0.020f);
+    this->player.ImportModel("src/models/OBJ/Leminha.obj", "src/models/OBJ/albedo.png", 0.005f);
+    this->player.ImportModel("src/models/OBJ/araba1.glb", "src/models/OBJ/car.png", 0.9f);
     this->player.ImportModel("src/models/OBJ/well.obj", "src/models/OBJ/well_diffuse.png", 0.12f);
     this->player.ImportModel("src/models/OBJ/turret.obj", "src/models/OBJ/turret_diffuse.png", 0.06f);
 
@@ -36,6 +36,7 @@ void Game::IncrementScore(int amount) {
 
 void Game::isHere() {
     LoadTextures();
+    LoadModels();
 
     while (!this->window->ShouldClose()) {
         double time = GetTime();

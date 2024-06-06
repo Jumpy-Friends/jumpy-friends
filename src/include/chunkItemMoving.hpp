@@ -3,6 +3,7 @@
 #include <raylib-cpp.hpp>
 
 #include "chunkItem.hpp"
+#include "models.hpp"
 
 enum MovingChunkItem {
     Car = 0,
@@ -15,6 +16,7 @@ class ChunkItemMoving : public ChunkItem {
     MovingChunkItem type;
     void Draw(Vector3) override;
     void Update() override;
+    Model model;
 
     ChunkItemMoving(MovingChunkItem type, float speedX, float position) {
         this->type = type;

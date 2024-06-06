@@ -7,6 +7,7 @@
 #include "chunk.hpp"
 #include "utils.hpp"
 
+
 class Ground {
    private:
     std::vector<Chunk> chunks;
@@ -22,6 +23,6 @@ class Ground {
     void Update();
     void Draw();
     void PrintChunks();
-
+    
     const std::vector<Chunk>& getChunks() const;
 };
