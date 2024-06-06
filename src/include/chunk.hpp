@@ -35,7 +35,6 @@ struct Chunk {
     int chunkItemCapacity = 50;
     double speed = 0.001;
 
-
     ChunkType type;
     raylib::Vector3 position;
     ChunkState state;
@@ -51,6 +50,10 @@ struct Chunk {
         this->state = state;
         this->position = position;
         this->speed = speed;
+
+        if (type == River)
+            this->speed *= GetRandomValue(0, 1) == 0 ? 1 : -1;
+
         this->setupChunkItems();
     }
 
@@ -64,9 +67,7 @@ struct Chunk {
 
     void moveMovingChunkItems();
     void deleteMovingChunkItem();
-    void generateMovingChunkItem();  
-                                     
-    
+    void generateMovingChunkItem();
 
    private:
 };

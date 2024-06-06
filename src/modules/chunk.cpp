@@ -48,7 +48,7 @@ void Chunk::setPosition(raylib::Vector3 position) {
 }
 
 void Chunk::setupChunkItems() {
-    for (int i = -25; i < this->chunkItemCapacity - 25; i++) {
+    for (int i = -50; i < this->chunkItemCapacity; i++) {
         double random = GetRandomValue(0, 1000) / 1000.f;
 
         double generationProbability = this->type == River || this->type == Road ? DYNAMIC_DENSITY : STABLE_DENSITY;
@@ -59,10 +59,13 @@ void Chunk::setupChunkItems() {
 
         if (this->type == River || this->type == Road) {
             MovingChunkItem type = Car;
-            if (this->type == River)
+            double spacing = 5.0;
+            if (this->type == River) {
                 type = Surfboard;
+                spacing = 2.0;
+            }
 
-            newItem = new ChunkItemMoving(type, this->speed, ((i - 10) * 5.0f));
+            newItem = new ChunkItemMoving(type, this->speed, ((i - 10) * spacing));
         } else {
             if (i == 0) continue;
             newItem = new ChunkItemStable(GetRandomValue(3, 5) * i);
@@ -78,7 +81,6 @@ void Chunk::updateChunkItems() {
     }
 }
 
-
 void Chunk::moveMovingChunkItems() {
     if (this->type == Road || this->type == River) {
         for (ChunkItem* item : items) {
@@ -86,4 +88,3 @@ void Chunk::moveMovingChunkItems() {
         }
     }
 }
-
