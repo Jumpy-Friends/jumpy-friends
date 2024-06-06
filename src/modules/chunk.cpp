@@ -30,18 +30,15 @@ void Chunk::Draw(ChunkType nextChunk) {
             DrawPlane(tilePosition, Vector2{0.6, 0.075}, WHITE);
         }
     }
-    
-  
-    for(ChunkItem* item: items){
+
+    for (ChunkItem* item : items) {
         item->Draw(this->position);
     }
-    
 }
 
 void Chunk::Update(double speed) {
     this->position.z -= speed;
     this->updateChunkItems();
-    
 }
 
 void Chunk::Despawn() {}
@@ -50,80 +47,43 @@ void Chunk::setPosition(raylib::Vector3 position) {
     this->position = position;
 }
 
+void Chunk::setupChunkItems() {
+    for (int i = -25; i < this->chunkItemCapacity - 25; i++) {
+        double random = GetRandomValue(0, 1000) / 1000.f;
 
-void Chunk::setupChunkItems(){
+        double generationProbability = this->type == River || this->type == Road ? DYNAMIC_DENSITY : STABLE_DENSITY;
 
-    for (int i = 0; i < this->chunkItemCapacity; i++){
-        
+        if (!isbetween<double>(random, 0.f, generationProbability)) continue;
+
         ChunkItem* newItem;
-        if (this->type == River || this->type == Road) {
-            if(!this->generateBernouilli(this->itemGenProb)){
-                continue;
-            }
 
+        if (this->type == River || this->type == Road) {
             MovingChunkItem type = Car;
-            if (this->type == River) {
+            if (this->type == River)
                 type = Surfboard;
-            }
-            newItem = new ChunkItemMoving(type, 0.05f, -6.f + ((i + 1) * 4.0f));
+
+            newItem = new ChunkItemMoving(type, this->speed, ((i - 10) * 5.0f));
+        } else {
+            if (i == 0) continue;
+            newItem = new ChunkItemStable(GetRandomValue(3, 5) * i);
         }
-        else {
-            if(!this->generateBernouilli(this->itemGenProb)){
-                continue;
-            }
-            newItem = new ChunkItemStable(-6.f + ((i + 1) * 4.0f));
-        }
+
         this->items.push_back(newItem);
     }
 }
 
-void Chunk::updateChunkItems(){
+void Chunk::updateChunkItems() {
     if (this->type == River || this->type == Road) {
-        this->deleteMovingChunkItem();
-        this->generateMovingChunkItem();
         this->moveMovingChunkItems();
     }
 }
 
-//
 
-void Chunk::deleteMovingChunkItem(){
-    if(!items.empty()){
-        ChunkItem* mightDelete = items.front();
-        if(mightDelete->position > 15.0 || mightDelete->position < -15.0 ){
-        items.pop_front();
-        }
-    }
-}
-
-void Chunk::generateMovingChunkItem() {
-    // the list is full
-    if (this->chunkItemCapacity == this->items.size()) return;
-     
-    MovingChunkItem type = Car;
-
-    if (this->type == River) {
-        type = Surfboard;
-    }
-
-    this->items.push_back(new ChunkItemMoving(type, 0.05, -14.0 + ((this->items.size()+ 1) * 4.0)));
-}
-
-void Chunk::moveMovingChunkItems(){
+void Chunk::moveMovingChunkItems() {
     if (this->type == Road || this->type == River) {
-        for(ChunkItem* item: items){
+        for (ChunkItem* item : items) {
             item->Update();
         }
     }
 }
 
-bool Chunk::generateBernouilli(double succesP){
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::bernoulli_distribution d(succesP);
-
-    bool bernoulli_random_variable = d(gen);
-
-    return bernoulli_random_variable;
-}

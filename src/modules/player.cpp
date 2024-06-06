@@ -47,6 +47,10 @@ void Player::Update() {
     this->position.y += currentSpeed;
 }
 
+void Player::followLog(float speed) {
+    this->position.x -= speed;
+}
+
 void Player::JumpForward() {
     if (this->jumpType != JumpType::None) return;
 
@@ -77,6 +81,10 @@ void Player::JumpBackward() {
 
 void Player::resetPos() {
     this->position = Vector3{0, 0.1, 0};
+}
+
+Vector3 Player::GetPosition() const {
+    return this->position;
 }
 
 BoundingBox Player::GetBoundingBox() const {

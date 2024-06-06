@@ -7,11 +7,10 @@
 #include "chunk.hpp"
 #include "utils.hpp"
 
+
 class Ground {
    private:
     std::vector<Chunk> chunks;
-    double speeds[3] = {0.05, 0.1, 1.6};
-    int directions;
 
     Chunk collapseNextChunk();
     Chunk getLastChunk();
@@ -25,6 +24,6 @@ class Ground {
     void Update();
     void Draw();
     void PrintChunks();
-
+    
     const std::vector<Chunk>& getChunks() const;
 };
