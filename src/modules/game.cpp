@@ -10,7 +10,6 @@ Game::Game(int width, int height, std::string title) {
 
     SetTargetFPS(60);
 
-    // this->camera.position = (Vector3){-4.0f, 7.50f, -5.0f};
     this->camera.position = (Vector3){0.0f, 10.f, -8.0f};
     this->camera.target = (Vector3){0.0f, 0.0f, 3.0f};
     this->camera.up = (Vector3){0.0f, 1.0f, 0.0f};
