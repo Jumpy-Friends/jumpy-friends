@@ -78,6 +78,7 @@ void Chunk::updateChunkItems() {
     }
 }
 
+
 void Chunk::moveMovingChunkItems() {
     if (this->type == Road || this->type == River) {
         for (ChunkItem* item : items) {
@@ -86,13 +87,3 @@ void Chunk::moveMovingChunkItems() {
     }
 }
 
-bool Chunk::generateBernouilli(double succesP) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::bernoulli_distribution d(succesP);
-
-    bool bernoulli_random_variable = d(gen);
-
-    return bernoulli_random_variable;
-}

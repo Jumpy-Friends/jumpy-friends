@@ -92,3 +92,9 @@ BoundingBox Player::GetBoundingBox() const {
     Vector3 max = {this->position.x + 0.15f, this->position.y + 0.15f, this->position.z + 0.15f};
     return BoundingBox{min, max};
 }
+
+BoundingBox Player::GetFutureBoundingBox(float xOffset, float zOffset) const {
+    Vector3 min = {this->position.x + xOffset - 0.15f, this->position.y - 0.15f, this->position.z + zOffset - 0.35f};
+    Vector3 max = {this->position.x + xOffset + 0.15f, this->position.y + 0.15f, this->position.z + zOffset + 0.35f};
+    return BoundingBox{min, max};
+}

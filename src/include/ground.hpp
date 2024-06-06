@@ -11,7 +11,6 @@
 class Ground {
    private:
     std::vector<Chunk> chunks;
-    double speeds[3] = {0.05, 0.1, 1.6};
 
     Chunk collapseNextChunk();
     Chunk getLastChunk();

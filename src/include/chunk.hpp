@@ -31,8 +31,10 @@ enum ChunkState {
 
 struct Chunk {
     std::deque<ChunkItem*> items;
+
     int chunkItemCapacity = 50;
     double speed = 0.001;
+
 
     ChunkType type;
     raylib::Vector3 position;
@@ -62,9 +64,9 @@ struct Chunk {
 
     void moveMovingChunkItems();
     void deleteMovingChunkItem();
-    void generateMovingChunkItem();  // Remove moving
-                                     // Setup -> iterate from -15 to 15
-    bool generateBernouilli(double);
+    void generateMovingChunkItem();  
+                                     
+    
 
    private:
 };
