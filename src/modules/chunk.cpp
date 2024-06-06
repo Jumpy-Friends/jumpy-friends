@@ -19,7 +19,7 @@ void Chunk::Draw(ChunkType nextChunk) {
     else
         model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_GRASS;
 
-    for (int i = -15; i < 15; i++) {
+    for (int i = -20; i < 20; i++) {
         Vector3 tilePosition = this->position;
         tilePosition.x -= i;
         DrawModel(model, tilePosition, 1, WHITE);

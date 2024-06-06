@@ -26,7 +26,7 @@ class Player {
     int currentModelIndex;
 
    public:
-    Vector3 position = Vector3{0, 0.1, 0};
+    Vector3 position = Vector3{0, 0.05, 0};
     Player(double speed);
     void Draw();
     void ImportModel(const std::string& path, const std::string& texturePath, float scale);
@@ -41,5 +41,4 @@ class Player {
     BoundingBox GetBoundingBox() const;
 
     Vector3 GetPosition() const;
-
 };

@@ -4,8 +4,8 @@
 
 int main() {
     // Initialization
-    int screenWidth = 800;
-    int screenHeight = 450;
+    int screenWidth = 1280;
+    int screenHeight = 768;
 
     SetRandomSeed(std::time(0));
 
