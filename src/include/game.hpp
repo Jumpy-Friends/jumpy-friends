@@ -23,6 +23,7 @@ class Game {
     Camera3D camera;
     GameState gameState = Start;
     double worldSpeed = 0.04;
+    int score;
     Ground ground = Ground(RENDER_CHUNK_SIZE, this->worldSpeed);
     Player player = Player(this->worldSpeed);
 
@@ -40,7 +41,7 @@ class Game {
 
     void onClick(Vector2 position);
     void onKeyPress(int key);
-    int score;
+    ChunkType currentPlayerChunk();
 
    public:
     Game(int, int, std::string);
