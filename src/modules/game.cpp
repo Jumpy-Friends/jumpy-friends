@@ -90,18 +90,25 @@ void Game::Update(double time, double deltaTime) {
     }
 
 
-      if (CheckMovingCollisions()) {
-          MovingChunkItem c;
-          float speed = 0;
-          CheckCollisions(c, speed);
-          if (c == Surfboard) {
-              player.followLog(speed);
-              return;
-          }
+    else if (CheckMovingCollisions()) {
+        MovingChunkItem c;
+        float speed = 0;
+        CheckCollisions(c, speed);
+        if (c == Surfboard) {
+            player.followLog(speed);
+            return;
+        }
 
-          std::cout << "Game Over!" << std::endl;
-          this->gameState = Finish;
-      }
+        std::cout << "Game Over!" << std::endl;
+        this->gameState = Finish;
+    }
+
+    else if (currentPlayerChunk() == River){
+    
+    std::cout << "Game Over!" << std::endl;
+    this->gameState = Finish;
+
+    }
     
 }
 
@@ -271,4 +278,15 @@ bool Game::CheckCollisions(MovingChunkItem& c, float& speed) {
         }
     }
     return false;
+}
+
+ChunkType Game::currentPlayerChunk(){
+
+    const auto& chunks = this->ground.getChunks();
+    for (const auto& chunk : chunks) {
+        if (abs(chunk.position.z - player.position.z) < 0.5){
+            return chunk.type;
+        }
+    }
+
 }
