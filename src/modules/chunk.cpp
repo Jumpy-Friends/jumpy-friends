@@ -64,6 +64,7 @@ void Chunk::setupChunkItems() {
 
             newItem = new ChunkItemMoving(type, this->speed, ((i - 10) * 5.0f));
         } else {
+            if (i == 0) continue;
             newItem = new ChunkItemStable(GetRandomValue(3, 5) * i);
         }
 
