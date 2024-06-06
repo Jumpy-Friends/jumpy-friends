@@ -84,32 +84,37 @@ void Game::Update(double time, double deltaTime) {
     this->player.Update();
 
     if (this->IsOutOfBounds(this->player.GetPosition())) {
-
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
 
-
-    else if (CheckMovingCollisions()) {
+    if (CheckMovingCollisions()) {
         MovingChunkItem c;
         float speed = 0;
         CheckCollisions(c, speed);
         if (c == Surfboard) {
             player.followLog(speed);
             return;
-        }
+        } else if (CheckMovingCollisions()) {
+            MovingChunkItem c;
+            float speed = 0;
+            CheckCollisions(c, speed);
+            if (c == Surfboard) {
+                player.followLog(speed);
+                return;
+            }
 
+            std::cout << "Game Over!" << std::endl;
+            this->gameState = Finish;
+        }
         std::cout << "Game Over!" << std::endl;
         this->gameState = Finish;
     }
 
-    else if (currentPlayerChunk() == River){
-    
-    std::cout << "Game Over!" << std::endl;
-    this->gameState = Finish;
-
+    else if (currentPlayerChunk() == River) {
+        std::cout << "Game Over!" << std::endl;
+        this->gameState = Finish;
     }
-    
 }
 
 void Game::DisplayStart(double time, double deltaTime) {
@@ -140,7 +145,8 @@ void Game::DisplayPlay(double time, double deltaTime) {
         }
         EndMode3D();
 
-        DrawText(TextFormat("Score: %d", this->score), GetScreenWidth() - 115, 10, 20, BLACK);
+        DrawText(TextFormat("%d", this->score), 37, 19, 42, BLACK);
+        DrawText(TextFormat("%d", this->score), 33, 15, 42, WHITE);
     }
     EndDrawing();
 }
@@ -149,8 +155,12 @@ void Game::DisplayFinish(double time, double deltaTime) {
     BeginDrawing();
     {
         ClearBackground(BLACK);
-        DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 60) / 2, GetScreenHeight() / 2 - 30, 60, RED);
-        DrawText("Click to Restart", GetScreenWidth() / 2 - MeasureText("Click to Restart", 20) / 2, GetScreenHeight() / 2 + 40, 20, GRAY);
+        DrawText("Game Over!", GetScreenWidth() / 2 - MeasureText("Game Over!", 60) / 2, 96, 60, RED);
+
+        DrawText("Your Score", GetScreenWidth() / 2 - MeasureText("Your Score", 28) / 2, 200, 28, WHITE);
+
+        DrawText(TextFormat("%d", score), GetScreenWidth() / 2 - MeasureText(TextFormat("%d", score), 48) / 2, 240, 48, WHITE);
+        DrawText("Click to Restart", GetScreenWidth() / 2 - MeasureText("Click to Restart", 20) / 2, GetScreenHeight() / 2 + 128, 20, GRAY);
     }
     EndDrawing();
 }
@@ -170,32 +180,30 @@ void Game::onClick(Vector2 position) {
 void Game::onKeyPress(int key) {
     if (this->gameState == Playing) {
         if (key == KEY_UP) {
-
-            if (!this->CheckStaticCollisions(0.f, 1.0f)){
+            if (!this->CheckStaticCollisions(0.f, 1.0f)) {
                 this->player.JumpForward();
-              this->IncrementScore(10);
+                this->IncrementScore(10);
             }
 
             return;
         }
 
         if (key == KEY_LEFT) {
-            if (!this->CheckStaticCollisions(1.0f, 0.f)){
+            if (!this->CheckStaticCollisions(1.0f, 0.f)) {
                 this->player.JumpLeft();
             }
             return;
         }
 
         if (key == KEY_RIGHT) {
-            if (!this->CheckStaticCollisions(-1.0f, 0.f)){
+            if (!this->CheckStaticCollisions(-1.0f, 0.f)) {
                 this->player.JumpRight();
             }
             return;
         }
 
         if (key == KEY_DOWN) {
-
-            if (!this->CheckStaticCollisions(0.f, -1.0f)){
+            if (!this->CheckStaticCollisions(0.f, -1.0f)) {
                 this->player.JumpBackward();
                 this->IncrementScore(-10);
             }
@@ -210,17 +218,15 @@ void Game::onKeyPress(int key) {
     }
 }
 
-
 bool Game::CheckMovingCollisions() {
-
     BoundingBox playerBox = this->player.GetBoundingBox();
     const auto& chunks = this->ground.getChunks();
 
     for (const auto& chunk : chunks) {
-        if (chunk.type == Road || chunk.type == River){
-            for(ChunkItem* item: chunk.items){
-               BoundingBox itemBox = item->GetMovingBoundingBox(chunk.position);
-               if (CheckCollisionBoxes(playerBox, itemBox)) {
+        if (chunk.type == Road || chunk.type == River) {
+            for (ChunkItem* item : chunk.items) {
+                BoundingBox itemBox = item->GetMovingBoundingBox(chunk.position);
+                if (CheckCollisionBoxes(playerBox, itemBox)) {
                     return true;
                 }
             }
@@ -228,38 +234,34 @@ bool Game::CheckMovingCollisions() {
     }
     return false;
 }
-
 
 bool Game::CheckStaticCollisions(float xOffset, float zOffset) {
     Vector3 currentPosition = player.position;
     Vector3 newPosition = Vector3{currentPosition.x + xOffset, currentPosition.y, currentPosition.z + zOffset};
-    
-    const auto& chunks = this->ground.getChunks();  
+
+    const auto& chunks = this->ground.getChunks();
 
     for (const auto& chunk : chunks) {
-        if (!(chunk.type == Road || chunk.type == River)){
-            for(ChunkItem* item: chunk.items){
+        if (!(chunk.type == Road || chunk.type == River)) {
+            for (ChunkItem* item : chunk.items) {
                 Vector3 chunkPosition = chunk.position;
-                
+
                 float itemXPosition = item->position;
 
                 Vector3 itemPosition = Vector3{itemXPosition, chunkPosition.y, chunkPosition.z};
 
-                if(abs(itemPosition.x - newPosition.x) < 0.5 && abs(itemPosition.z - newPosition.z) < 0.5){
+                if (abs(itemPosition.x - newPosition.x) < 0.5 && abs(itemPosition.z - newPosition.z) < 0.5) {
                     return true;
                 }
-
             }
         }
     }
     return false;
 }
 
-
 bool Game::CheckCollisions(MovingChunkItem& c, float& speed) {
     BoundingBox playerBox = this->player.GetBoundingBox();
     const auto& chunks = this->ground.getChunks();
-
 
     for (const auto& chunk : chunks) {
         if (chunk.type == Road || chunk.type == River) {
@@ -280,13 +282,11 @@ bool Game::CheckCollisions(MovingChunkItem& c, float& speed) {
     return false;
 }
 
-ChunkType Game::currentPlayerChunk(){
-
+ChunkType Game::currentPlayerChunk() {
     const auto& chunks = this->ground.getChunks();
     for (const auto& chunk : chunks) {
-        if (abs(chunk.position.z - player.position.z) < 0.5){
+        if (abs(chunk.position.z - player.position.z) < 0.35) {
             return chunk.type;
         }
     }
-
 }
